@@ -1,10 +1,19 @@
 import './App.css';
+import Users from "./components/users/Users";
 
-function App() {
+
+export default function App() {
   return (
-    <div>
-    </div>
+      <div>
+        <Users/>
+      </div>
   );
 }
 
-export default App;
+
+// Взяти масив usersList.
+// Створити компонент,котрий характеризує юзера.
+// Створити компонент,котрий характеризує підобєкт юзера address. Використати в компоненті юзера.
+// Створити компонент,котрий характеризує підобєкт адреси юзера geo. Використати в компоненті адреси.
+// Вкладеність компонентів : App->Users->User->Address->Geo
+// Вивести всі обєкти з масиву
