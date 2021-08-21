@@ -3,13 +3,7 @@ import {useEffect, useState} from "react";
 import {deleteCarAPI, getCarsAPI} from "../../services/car.api.service";
 import Car from "../car/Car";
 
-export default function Cars({setInputCarData}) {
-
-    let [cars, setCars] = useState([]);
-
-    useEffect(() => {
-        getCarsAPI().then(value => setCars(value))
-    }, []);
+export default function Cars({setInputCarData, cars, setCars}) {
 
     let deleteCar = (car) => {
         deleteCarAPI(car).then(value => console.log(value));

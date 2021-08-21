@@ -1,10 +1,14 @@
-import {useState} from "react";
-import {postCarAPI, putCarAPI} from "../../services/car.api.service";
+import { useEffect, useState } from "react";
+import { getCarsAPI, patchCarAPI, postCarAPI, putCarAPI } from "../../services/car.api.service";
 import Cars from "../cars/Cars";
 
 export default function CarForm() {
-
     let [formState, setFormState] = useState({model: '', year: '', price: ''});
+    let [cars, setCars] = useState([]);
+
+    useEffect(() => {
+        getCarsAPI().then(value => setCars(value))
+    }, []);
 
     let onFormInputChange = (event) => {
         setFormState({...formState, [event.target.name]: event.target.value});
@@ -23,14 +27,14 @@ export default function CarForm() {
             && formState.price >= 0;
 
         if (verificationOfValidation) {
-            if (update) {
-                putCarAPI(formState).then(value => console.log(value));
-                setFormState({model: '', year: '', price: ''});
-            } else {
-                postCarAPI(formState).then(value => console.log(value));
-                setFormState({model: '', year: '', price: ''});
-            }
-        } else { console.log('ERROR: invalid validation') }
+            update
+                ? patchCarAPI(formState).then(value => setCars(value))
+                : postCarAPI(formState).then(value => setCars(value));
+
+            setFormState({model: '', year: '', price: ''});
+            return;
+        }
+        console.log('ERROR: invalid validation');
     };
 
     return(
@@ -60,7 +64,7 @@ export default function CarForm() {
                 <input type={'submit'} name={'button'} value={'PostCar'}/>
             </form>
 
-            <Cars setInputCarData={setFormState}/>
+            <Cars setInputCarData={setFormState} cars={cars} setCars={setCars}/>
         </div>
     );
 }
